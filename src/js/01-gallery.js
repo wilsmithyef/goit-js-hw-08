@@ -1,43 +1,36 @@
+import { galleryItems } from './gallery-items.js';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import { galleryItems } from "./gallery-items.js";
-// Descrito en la documentación
-import SimpleLightbox from "simplelightbox";
-// Importación adicional de estilos
-import "simplelightbox/dist/simple-lightbox.min.css";
+const gallery = document.querySelector('.gallery');
 
-var lightbox = new SimpleLightbox(".gallery a", {
-  captions: true,
-  captionDelay: 250,
-  captionType: "attr",
-  captionsData: "alt",
+const action = imageAction => {
+  imageAction.preventDefault();
+};
+
+const createGallery = items => {
+  return items
+    .map(
+      item =>
+        `<li class='gallery_item'>
+           <a class='gallery__link' href='${item.original}'>
+              <img
+                class='gallery__image'
+                src= '${item.preview}'
+                alt= '${item.description}'
+              />
+            </a>
+          </li>`
+    )
+    .join('');
+};
+
+const addGallery = createGallery(galleryItems);
+gallery.innerHTML = addGallery;
+
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250, 
 });
+console.log(lightbox); 
 
-console.log(galleryItems);
-
-const gallery = document.querySelector(".gallery");
-
-const galleryMarkup = galleryItems
-  .map(
-    (item) => `
-    <li class="gallery__item">
-      <a class="gallery__link" href="${item.original}">
-        <img
-          class="gallery__image"
-          src="${item.preview}"
-        data-source="${item.original}"
-          alt="${item.description}"
-        />
-      </a>
-    </li>
-  `
-  )
-  .join("");
-
-gallery.innerHTML = galleryMarkup;
-
-document.addEventListener("DOMContentLoaded", function () {
-  const gallery = new SimpleLightbox(".gallery a", {
-    captionsData: "alt",
-    captionDelay: 250,
-  });
-});
